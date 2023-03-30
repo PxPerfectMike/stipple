@@ -1,0 +1,20 @@
+.App {
+	background-color: #070606;
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.hole {
+	position: absolute;
+	border-radius: 50%;
+	background-color: #f5f5f5;
+	width: 100px;
+	height: 100px;
+	margin: 0;
+	padding: 0;
+}
