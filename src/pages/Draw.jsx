@@ -17,7 +17,7 @@ function Draw() {
 	};
 
 	return (
-		<div className='App draw' onClick={handleAddHole}>
+		<div className='App' onClick={handleAddHole}>
 			<p>Draw</p>
 			<Link to='/'>Home</Link>
 			{holeCount.map((hole, index) => (
@@ -32,6 +32,7 @@ function Draw() {
 					height='100'
 				></motion.svg>
 			))}
+			<div className='draw-area'></div>
 		</div>
 	);
 }

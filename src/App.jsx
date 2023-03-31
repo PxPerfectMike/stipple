@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Draw from './pages/Draw.jsx'; // Updated import statement
@@ -6,6 +6,7 @@ import Gallery from './pages/Gallery.jsx'; // Updated import statement
 import Home from './pages/Home.jsx'; // Updated import statement
 import Login from './pages/Login.jsx'; // Updated import statement
 import Payment from './pages/Payment.jsx'; // Updated import statement
+import { motion } from 'framer-motion';
 
 function App() {
 	return (

@@ -1,12 +1,8 @@
 .App {
 	background-color: #070606;
-	height: 100vh;
-	width: 100vw;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 	position: relative;
+	min-height: 100%;
+	min-width: 100%;
 }
 
 .hole {
@@ -17,4 +13,71 @@
 	height: 100px;
 	margin: 0;
 	padding: 0;
+}
+
+.home {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px;
+}
+
+.home h1 {
+	margin: 0;
+	font-family: 'Rubik Puddles', cursive;
+	font-size: 3rem;
+	flex-shrink: 0;
+}
+
+.navbar {
+	display: flex;
+	align-items: center;
+}
+
+nav {
+	background-color: transparent;
+	color: #fff;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 0 20px;
+	flex-shrink: 0;
+}
+
+nav ul {
+	list-style: none;
+	display: flex;
+	margin: 0;
+	padding: 0;
+	font-family: 'Codystar', cursive;
+}
+
+nav li {
+	margin: 0 1rem;
+}
+
+nav a {
+	color: #fff;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 1.2rem;
+	padding: 0.5rem;
+	border-radius: 5px;
+	border: 3px dotted #f5f5f5;
+	background-color: transparent;
+}
+
+nav a:hover {
+	background: transparent;
+	box-shadow: 0 0 4px 4px #f5f5f5;
+}
+
+@media (max-width: 768px) {
+	.home {
+		padding: 10px;
+	}
+
+	.home h1 {
+		font-size: 2rem;
+	}
 }
