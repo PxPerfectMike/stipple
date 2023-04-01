@@ -6,13 +6,16 @@ function Navbar({ isLoggedIn }) {
 		<nav>
 			<ul>
 				<li>
-					<Link to='/draw'>Draw</Link>
+					<Link to='/'>Home</Link>
+				</li>
+				<li>
+					<Link to='/setup'>Draw</Link>
 				</li>
 				<li>
 					<Link to='/gallery'>Gallery</Link>
 				</li>
 				<li>
-					<Link to='/'>Home</Link>
+					<Link to='/payment'>Payment/Pricing</Link>
 				</li>
 				{isLoggedIn ? (
 					<li>
@@ -23,9 +26,6 @@ function Navbar({ isLoggedIn }) {
 						<Link to='/login'>Login</Link>
 					</li>
 				)}
-				<li>
-					<Link to='/payment'>Payment/Pricing</Link>
-				</li>
 			</ul>
 		</nav>
 	);

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 
 function Draw() {
 	const [dotSize, setDotSize] = useState(1);
@@ -7,10 +8,49 @@ function Draw() {
 	const mouseIsDown = useRef(false);
 	const drawCtx = useRef(null);
 	const actions = useRef([]);
-	const [actionsChanged, setActionsChanged] = useState(false);
+	const location = useLocation();
+
+	const canvasDimensions = location.state?.canvasDimensions;
+	const backgroundColor = location.state?.backgroundColor;
+
+	if (!canvasDimensions || !backgroundColor) {
+		return null;
+	}
+
+	const [drawing, setDrawing] = useState({
+		canvasDimensions,
+		backgroundColor,
+		actions: [],
+	});
 
 	useEffect(() => {
-		drawCtx.current = canvasRef.current.getContext('2d');
+		const removeLocalStorageItem = () => {
+			localStorage.removeItem('drawActions');
+		};
+
+		return () => {
+			removeLocalStorageItem();
+		};
+	}, [location]);
+
+	useEffect(() => {
+		if (!canvasRef.current) {
+			return;
+		}
+
+		const ctx = canvasRef.current.getContext('2d');
+		drawCtx.current = ctx;
+
+		// Set canvas dimensions and background color
+		canvasRef.current.width = canvasDimensions.width;
+		canvasRef.current.height = canvasDimensions.height;
+		drawCtx.current.fillStyle = backgroundColor;
+		drawCtx.current.fillRect(
+			0,
+			0,
+			canvasRef.current.width,
+			canvasRef.current.height
+		);
 
 		// Load actions from local storage
 		const savedActions = localStorage.getItem('drawActions');
@@ -20,19 +60,6 @@ function Draw() {
 		redraw();
 	}, []);
 
-	useEffect(() => {
-		// Save actions to local storage when actionsChanged is true
-		if (actionsChanged) {
-			localStorage.setItem('drawActions', JSON.stringify(actions.current));
-			setActionsChanged(false);
-		}
-
-		// Save actions when the component is unmounted
-		return () => {
-			localStorage.setItem('drawActions', JSON.stringify(actions.current));
-		};
-	}, [actionsChanged]);
-
 	const redraw = () => {
 		drawCtx.current.clearRect(
 			0,
@@ -40,6 +67,16 @@ function Draw() {
 			canvasRef.current.width,
 			canvasRef.current.height
 		);
+
+		// Fill the canvas with the background color
+		drawCtx.current.fillStyle = backgroundColor;
+		drawCtx.current.fillRect(
+			0,
+			0,
+			canvasRef.current.width,
+			canvasRef.current.height
+		);
+
 		actions.current.forEach((action) => {
 			action.dots.forEach((dot) => {
 				drawCtx.current.beginPath();
@@ -48,6 +85,10 @@ function Draw() {
 				drawCtx.current.fill();
 			});
 		});
+	};
+
+	const saveActionsToLocalStorage = () => {
+		localStorage.setItem('drawActions', JSON.stringify(actions.current));
 	};
 
 	const handleAddDot = (event) => {
@@ -63,7 +104,7 @@ function Draw() {
 		drawCtx.current.fill();
 
 		actions.current[actions.current.length - 1].dots.push(dot);
-		setActionsChanged(true);
+		saveActionsToLocalStorage(); // Directly call the save function
 	};
 
 	const maxUndoCapacity = 20; // <-- A greater maxUndoCapacity can me monetized
@@ -93,7 +134,41 @@ function Draw() {
 		if (actions.current.length > 0) {
 			const lastAction = actions.current.pop();
 			undoneActions.current.push(lastAction);
-			redraw();
+
+			// Clear the canvas
+			drawCtx.current.clearRect(
+				0,
+				0,
+				canvasRef.current.width,
+				canvasRef.current.height
+			);
+
+			// Fill the canvas with the background color
+			drawCtx.current.fillStyle = backgroundColor;
+			drawCtx.current.fillRect(
+				0,
+				0,
+				canvasRef.current.width,
+				canvasRef.current.height
+			);
+
+			// Redraw all actions except the last one
+			actions.current.forEach((action) => {
+				action.dots.forEach((dot) => {
+					drawCtx.current.beginPath();
+					drawCtx.current.arc(
+						dot.x,
+						dot.y,
+						sizes[dot.size] / 2,
+						0,
+						Math.PI * 2
+					);
+					drawCtx.current.fillStyle = '#f5f5f5';
+					drawCtx.current.fill();
+				});
+			});
+
+			saveActionsToLocalStorage();
 		}
 	};
 
@@ -101,7 +176,16 @@ function Draw() {
 		if (undoneActions.current.length > 0) {
 			const lastUndoneAction = undoneActions.current.pop();
 			actions.current.push(lastUndoneAction);
-			redraw();
+
+			// Draw the last undone action on the canvas
+			lastUndoneAction.dots.forEach((dot) => {
+				drawCtx.current.beginPath();
+				drawCtx.current.arc(dot.x, dot.y, sizes[dot.size] / 2, 0, Math.PI * 2);
+				drawCtx.current.fillStyle = '#f5f5f5';
+				drawCtx.current.fill();
+			});
+
+			saveActionsToLocalStorage();
 		}
 	};
 
@@ -132,21 +216,29 @@ function Draw() {
 			canvasRef.current.height
 		);
 
+		// Fill the canvas with the background color
+		drawCtx.current.fillStyle = backgroundColor;
+		drawCtx.current.fillRect(
+			0,
+			0,
+			canvasRef.current.width,
+			canvasRef.current.height
+		);
+
 		// Reset the actions and undoneActions
 		actions.current = [];
 		undoneActions.current = [];
 
-		// Set actionsChanged to true so the empty state is saved to local storage
-		setActionsChanged(true);
+		// Save the empty state to local storage
+		saveActionsToLocalStorage();
 	};
 
 	return (
 		<div className='App'>
+			<Link to='/'>Home</Link>
 			<p style={{ userSelect: 'none' }}>Draw</p>
 			<canvas
 				ref={canvasRef}
-				width={window.innerWidth / 1.2}
-				height={window.innerHeight / 1.2}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
 				onMouseMove={handleMouseMove}
@@ -154,10 +246,10 @@ function Draw() {
 					display: 'block',
 					float: 'right',
 					marginRight: '3%',
-					background: '#070606',
 					border: '3px solid #f5f5f5',
 				}}
 			></canvas>
+
 			<div className='button-group' style={{ zIndex: 2 }}>
 				<button style={{ userSelect: 'none' }} onClick={handleIncrement}>
 					+dotSize

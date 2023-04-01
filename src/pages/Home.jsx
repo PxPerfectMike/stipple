@@ -4,7 +4,7 @@ function Home() {
 	return (
 		<>
 			<div className='home'>
-				<h1>Stipplify</h1>
+				<h1 className='title'>Stipplify</h1>
 				<Navbar className='navbar' />
 			</div>
 		</>
