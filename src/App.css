@@ -7,8 +7,33 @@
 	min-width: 100%;
 }
 
-.setup {
-	color: #fff;
+.draw {
+	display: flex;
+	height: 100vh;
+}
+
+.controls {
+	background-color: #f5f5f5;
+	width: 20%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.drawing-canvas {
+	display: block;
+	margin: auto;
+	border: 3px solid #f5f5f5;
+}
+
+.controls {
+	background-color: #c53a3a;
+	width: 20%;
+	height: 100vh;
 }
 
 .dot {
@@ -34,11 +59,66 @@
 
 .title {
 	font-family: 'Rubik Puddles', cursive;
+	color: #ffffff;
 }
 
 .navbar {
 	display: flex;
 	align-items: center;
+}
+
+.setup {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #070606;
+	color: #fff;
+	height: 100vh;
+	padding: 2rem;
+}
+
+.canvas-options {
+	display: flex;
+	gap: 1rem;
+}
+
+.canvas-preview {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 2rem;
+	width: 100%;
+	height: 50%;
+}
+
+.preview {
+	border: 3px solid #fff;
+	box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.2);
+	width: 180px !important;
+	height: 120px !important;
+}
+
+.buttons {
+	display: flex;
+	gap: 1rem;
+	margin-top: 2rem;
+}
+
+button {
+	background-color: #a63838;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #ddd;
+}
+
+input[type='color'] {
+	cursor: pointer;
 }
 
 nav {

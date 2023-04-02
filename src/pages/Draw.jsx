@@ -234,44 +234,40 @@ function Draw() {
 	};
 
 	return (
-		<div className='App'>
-			<Link to='/'>Home</Link>
-			<p style={{ userSelect: 'none' }}>Draw</p>
+		<div className='draw'>
+			<div className='controls'>
+				<Link to='/'>Home</Link>
+				<p style={{ userSelect: 'none' }}>Draw</p>
+				<div className='button-group'>
+					<button style={{ userSelect: 'none' }} onClick={handleIncrement}>
+						+dotSize
+					</button>
+					<p style={{ userSelect: 'none' }}>{dotSize}</p>
+					<button style={{ userSelect: 'none' }} onClick={handleDecrement}>
+						-dotSize
+					</button>
+				</div>
+				<div className='undo-redo-buttons'>
+					<button style={{ userSelect: 'none' }} onClick={handleUndo}>
+						Undo
+					</button>
+					<button style={{ userSelect: 'none' }} onClick={handleRedo}>
+						Redo
+					</button>
+				</div>
+				<div className='clear-button'>
+					<button style={{ userSelect: 'none' }} onClick={handleClear}>
+						Clear
+					</button>
+				</div>
+			</div>
 			<canvas
 				ref={canvasRef}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
 				onMouseMove={handleMouseMove}
-				style={{
-					display: 'block',
-					float: 'right',
-					marginRight: '3%',
-					border: '3px solid #f5f5f5',
-				}}
+				className='drawing-canvas'
 			></canvas>
-
-			<div className='button-group' style={{ zIndex: 2 }}>
-				<button style={{ userSelect: 'none' }} onClick={handleIncrement}>
-					+dotSize
-				</button>
-				<p style={{ userSelect: 'none' }}>{dotSize}</p>
-				<button style={{ userSelect: 'none' }} onClick={handleDecrement}>
-					-dotSize
-				</button>
-			</div>
-			<div className='undo-redo-buttons'>
-				<button style={{ userSelect: 'none' }} onClick={handleUndo}>
-					Undo
-				</button>
-				<button style={{ userSelect: 'none' }} onClick={handleRedo}>
-					Redo
-				</button>
-			</div>
-			<div className='clear-button'>
-				<button style={{ userSelect: 'none' }} onClick={handleClear}>
-					Clear
-				</button>
-			</div>
 		</div>
 	);
 }
