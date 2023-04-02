@@ -1,14 +1,15 @@
-/* This stylesheet should be used to style only individual elements, for overarching style to apply to entire app use index.css */
-
 .App {
 	background-color: #070606;
 	position: relative;
 	min-height: 100%;
 	min-width: 100%;
+	overflow: hidden;
 }
 
 .draw {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	grid-template-rows: auto;
 	height: 100vh;
 }
 
@@ -73,17 +74,33 @@
 	align-items: center;
 	background-color: #070606;
 	color: #fff;
-	height: 100vh;
+	min-height: 100vh;
 	padding: 2rem;
+	box-sizing: border-box;
+	overflow-y: auto;
 }
 
-.canvas-options {
+.canvas-options,
+.color-buttons,
+.buttons {
 	display: flex;
 	gap: 1rem;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin-bottom: 1rem;
+}
+
+.canvas-preview-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 2rem;
 }
 
 .canvas-preview {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	margin-top: 2rem;
@@ -91,20 +108,26 @@
 	height: 50%;
 }
 
+.color-buttons {
+	display: flex;
+	max-width: 60%;
+	gap: 1rem;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.color-inputs {
+	display: flex;
+	justify-content: center;
+}
+
 .preview {
 	border: 3px solid #fff;
 	box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.2);
-	width: 180px !important;
-	height: 120px !important;
 }
 
-.buttons {
-	display: flex;
-	gap: 1rem;
-	margin-top: 2rem;
-}
-
-button {
+.button {
 	background-color: #a63838;
 	border: none;
 	padding: 0.5rem 1rem;
@@ -159,12 +182,69 @@ nav a:hover {
 	box-shadow: 0 0 4px 4px #f5f5f5;
 }
 
+@media (max-width: 1024px) {
+	.controls {
+		width: 30%;
+	}
+}
+
 @media (max-width: 768px) {
 	.home {
 		padding: 10px;
+		flex-direction: column;
 	}
 
 	.home h1 {
 		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.controls {
+		width: 100%;
+		height: auto;
+		padding: 1rem;
+	}
+
+	.setup {
+		min-height: 100vh;
+		justify-content: flex-start;
+	}
+
+	.canvas-options,
+	.color-buttons,
+	.buttons {
+		gap: 0.5rem;
+	}
+
+	.preview,
+	.canvas-preview {
+		display: none;
+	}
+}
+
+@media (max-width: 480px) {
+	.canvas-options,
+	.color-buttons,
+	.buttons {
+		gap: 0.5rem;
+	}
+
+	button {
+		padding: 0.25rem 0.5rem;
+		font-size: 0.8rem;
+	}
+
+	.preview {
+		width: 90px !important;
+		height: 60px !important;
+	}
+
+	nav li {
+		margin: 0 0.5rem;
+	}
+
+	nav a {
+		font-size: 1rem;
+		padding: 0.25rem;
 	}
 }
